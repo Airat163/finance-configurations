@@ -13,6 +13,7 @@ spring:
     hibernate:
       ddl-auto: update # Убедитесь, что схема базы данных будет обновляться автоматически
     show-sql: true # Логирование SQL-запросов для отладки
+    dialect: org.hibernate.dialect.PostgreSQLDialect
 
 logging:
   level:
