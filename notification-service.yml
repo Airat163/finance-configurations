@@ -8,6 +8,7 @@ spring:
     url: jdbc:postgresql://localhost:5433/notification_db
     username: postgres
     password: airat020660
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update # Убедитесь, что схема базы данных будет обновляться автоматически
