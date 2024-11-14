@@ -4,6 +4,16 @@ server:
 spring:
   application:
     name: account-service # Уникальное имя для сервиса
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: account-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
     url: jdbc:postgresql://localhost:5433/account_db
     username: postgres
@@ -14,6 +24,4 @@ spring:
       ddl-auto: update # Убедитесь, что схема базы данных будет обновляться автоматически
     show-sql: true # Логирование SQL-запросов для отладки
 
-logging:
-  level:
-    org.springframework: INFO
+

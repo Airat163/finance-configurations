@@ -1,9 +1,19 @@
 server:
-  port: 8084 # Укажите уникальный порт для каждого сервиса
+  port: 8084
 
 spring:
   application:
-    name: reporting-service # Уникальное имя для сервиса
+    name: reporting-service
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: reporting-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
     url: jdbc:postgresql://localhost:5433/reporting_db
     username: postgres
@@ -11,9 +21,22 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update # Убедитесь, что схема базы данных будет обновляться автоматически
-    show-sql: true # Логирование SQL-запросов для отладки
+      ddl-auto: update
+    show-sql: true
 
 logging:
   level:
     org.springframework: INFO
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5000
+    instances:
+      accountService:
+        baseConfig: default
+      transactionService:
+        baseConfig: default
